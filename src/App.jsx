@@ -3,7 +3,6 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import Testimonials from './components/Testimonials';
-import Pricing from './components/Pricing';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Template from './pages/Template';
@@ -13,7 +12,6 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Chat from './pages/Chat';
 import PremiumGenerator from './pages/PremiumGenerator';
-import Payment from './pages/Payment';
 
 import { AuthProvider } from './context/AuthContext';
 import { DarkModeProvider } from './context/DarkModeContext';
@@ -52,7 +50,7 @@ function App() {
               <Route path="/update-password" element={<UpdatePassword />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/premium-generator" element={<PremiumGenerator />} />
-              <Route path="/payment" element={<Payment />} />
+
               <Route path="/payment-status" element={<PaymentStatus />} />
               <Route path="/profile" element={<Profile />} />
             </Route>

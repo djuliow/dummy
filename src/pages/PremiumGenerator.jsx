@@ -4,24 +4,37 @@ import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 
 const uploadAssets = async (files, userId) => {
-  console.log("Creating blob URLs for user:", userId, files);
-  const uploadedUrls = {};
-
-  if (files.fotoMempelaiWanita) {
-    uploadedUrls.fotoMempelaiWanita = URL.createObjectURL(files.fotoMempelaiWanita);
-  }
+  const formData = new FormData();
+  
+  // Append single files
   if (files.fotoMempelaiPria) {
-    uploadedUrls.fotoMempelaiPria = URL.createObjectURL(files.fotoMempelaiPria);
+    formData.append('fotoMempelaiPria', files.fotoMempelaiPria);
+  }
+  if (files.fotoMempelaiWanita) {
+    formData.append('fotoMempelaiWanita', files.fotoMempelaiWanita);
   }
   if (files.musik) {
-    uploadedUrls.musik = URL.createObjectURL(files.musik);
-  }
-  if (files.galeriFoto && files.galeriFoto.length > 0) {
-    uploadedUrls.galeriFoto = files.galeriFoto.map(file => URL.createObjectURL(file));
+    formData.append('musik', files.musik);
   }
 
-  console.log("Generated blob URLs:", uploadedUrls);
-  return uploadedUrls;
+  // Append multiple files for gallery
+  if (files.galeriFoto && files.galeriFoto.length > 0) {
+    files.galeriFoto.forEach(file => {
+      formData.append('galeriFoto', file);
+    });
+  }
+
+  try {
+    const response = await axios.post('http://localhost:4000/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data.paths;
+  } catch (error) {
+    console.error("File upload error:", error);
+    throw new Error("Gagal meng-upload file ke server.");
+  }
 };
 
 const saveInvitationData = async (invitationData, user) => {

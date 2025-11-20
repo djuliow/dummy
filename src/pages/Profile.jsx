@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import axios from 'axios';
 
 function Profile() {
   const { session, userProfile, logout } = useAuth();
@@ -12,7 +13,7 @@ function Profile() {
   
   // State for the custom confirmation modal
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [slugsToDelete, setSlugsToDelete] = useState([]);
+  const [idsToDelete, setIdsToDelete] = useState([]);
 
   const handleLogout = async () => {
     await logout();
@@ -20,17 +21,17 @@ function Profile() {
   };
 
   // --- Selection Handlers ---
-  const handleSelection = (slug) => {
+  const handleSelection = (id) => {
     setSelected(prevSelected => 
-      prevSelected.includes(slug)
-        ? prevSelected.filter(s => s !== slug)
-        : [...prevSelected, slug]
+      prevSelected.includes(id)
+        ? prevSelected.filter(i => i !== id)
+        : [...prevSelected, id]
     );
   };
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
-      setSelected(invitations.map(inv => inv.slug));
+      setSelected(invitations.map(inv => inv.id));
     } else {
       setSelected([]);
     }
@@ -38,32 +39,23 @@ function Profile() {
 
   // --- Delete Logic ---
   // Opens the confirmation modal
-  const handleDeleteRequest = (slugs) => {
-    if (slugs.length === 0) return;
-    setSlugsToDelete(slugs);
+  const handleDeleteRequest = (ids) => {
+    if (ids.length === 0) return;
+    setIdsToDelete(ids);
     setIsModalOpen(true);
   };
 
   // The actual deletion logic, called from the modal
   const handleConfirmDelete = async () => {
-    if (slugsToDelete.length === 0) return;
+    if (idsToDelete.length === 0) return;
 
     try {
-      const response = await fetch(`/api/invitations/`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({ slugs: slugsToDelete }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Gagal menghapus undangan.');
+      // json-server doesn't support bulk delete, so we delete one by one
+      for (const id of idsToDelete) {
+        await axios.delete(`http://localhost:3000/invitations/${id}`);
       }
 
-      setInvitations(invitations.filter(inv => !slugsToDelete.includes(inv.slug)));
+      setInvitations(invitations.filter(inv => !idsToDelete.includes(inv.id)));
       setSelected([]); // Clear selection after deletion
 
     } catch (err) {
@@ -71,7 +63,7 @@ function Profile() {
     } finally {
       // Close the modal and clear the slugs to delete
       setIsModalOpen(false);
-      setSlugsToDelete([]);
+      setIdsToDelete([]);
     }
   };
 
@@ -83,10 +75,8 @@ function Profile() {
 
     const fetchInvitations = async () => {
       try {
-        const response = await fetch('/api/invitations/', { headers: { 'Authorization': `Bearer ${session.access_token}` } });
-        if (!response.ok) throw new Error('Gagal mengambil data undangan.');
-        const data = await response.json();
-        const sortedData = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        const response = await axios.get(`http://localhost:3000/invitations?user_id=${session.user.id}`);
+        const sortedData = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         setInvitations(sortedData);
       } catch (err) {
         setError(err.message);
@@ -161,22 +151,22 @@ function Profile() {
             {!loading && invitations.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {invitations.map((inv) => {
-                  const title = (inv.namaMempelaiPria && inv.namaMempelaiWanita) ? `${inv.namaMempelaiPria} & ${inv.namaMempelaiWanita}` : (inv.slug || 'Undangan');
-                  const isSelected = selected.includes(inv.slug);
+                  const title = (inv.generated_content.namaMempelaiPria && inv.generated_content.namaMempelaiWanita) ? `${inv.generated_content.namaMempelaiPria} & ${inv.generated_content.namaMempelaiWanita}` : (inv.slug || 'Undangan');
+                  const isSelected = selected.includes(inv.id);
                   return (
                     <div key={inv.id} className={`rounded-2xl shadow-lg border overflow-hidden flex flex-col group transition-all duration-300 bg-white dark:bg-gray-800 ${isSelected ? 'border-blue-500 ring-2 ring-blue-500' : 'border-gray-100 dark:border-gray-700'}`}>
                       <div className="p-6 flex-grow">
                         <div className="flex justify-between items-start">
-                          <p className="text-sm text-gray-400 dark:text-gray-500 group-hover:text-blue-500 transition-colors">{new Date(inv.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                          <input type="checkbox" checked={isSelected} onChange={() => handleSelection(inv.slug)} className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                          <p className="text-sm text-gray-400 dark:text-gray-500 group-hover:text-blue-500 transition-colors">{new Date(inv.id).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                          <input type="checkbox" checked={isSelected} onChange={() => handleSelection(inv.id)} className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                         </div>
                         <h3 className="text-xl font-bold text-gray-800 dark:text-white mt-2 truncate" title={title}>{title}</h3>
                       </div>
                       <div className="bg-gray-50 dark:bg-gray-700 p-4 border-t dark:border-gray-600 mt-auto flex items-center gap-2">
-                        <a href={`/api/invitations/${inv.slug}`} target="_blank" rel="noopener noreferrer" className="flex-1 text-center block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-3 rounded-lg transition duration-300 text-sm">
+                        <a href={`/invitations/${inv.slug}`} target="_blank" rel="noopener noreferrer" className="flex-1 text-center block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-3 rounded-lg transition duration-300 text-sm">
                           Lihat Undangan
                         </a>
-                        <button onClick={() => handleDeleteRequest([inv.slug])} className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition duration-300 dark:bg-red-800 dark:hover:bg-red-700 dark:text-red-300" title="Hapus Undangan">
+                        <button onClick={() => handleDeleteRequest([inv.id])} className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition duration-300 dark:bg-red-800 dark:hover:bg-red-700 dark:text-red-300" title="Hapus Undangan">
                           <span className="material-symbols-outlined">delete</span>
                         </button>
                       </div>
@@ -202,7 +192,7 @@ function Profile() {
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white" id="modal-title">Konfirmasi Penghapusan</h3>
               <div className="mt-4">
                 <p className="text-base text-gray-600 dark:text-gray-300">
-                  Apakah Anda yakin ingin menghapus {slugsToDelete.length} undangan? Tindakan ini tidak dapat dibatalkan.
+                  Apakah Anda yakin ingin menghapus {idsToDelete.length} undangan? Tindakan ini tidak dapat dibatalkan.
                 </p>
               </div>
             </div>

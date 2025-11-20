@@ -296,6 +296,41 @@
         "catatanKhusus": ""
       },
       "slug": "haha-9wctq9"
+    },
+    {
+      "id": "1ed4",
+      "user_id": "efd3",
+      "template_id": null,
+      "prompt": "Undangan untuk haha dan hihi",
+      "generated_content": {
+        "namaMempelaiPria": "haha",
+        "namaAyahMempelaiPria": "",
+        "namaIbuMempelaiPria": "",
+        "namaMempelaiWanita": "hihi",
+        "namaAyahMempelaiWanita": "",
+        "namaIbuMempelaiWanita": "",
+        "tanggalAcara": "2025-12-12",
+        "waktuAcara": "",
+        "lokasiAcara": "Unklab",
+        "waktuResepsi": "",
+        "tempatResepsi": "",
+        "fotoMempelaiPria": "http://localhost:4000/uploads/fotoMempelaiPria-1763647905278-863000206.jpg",
+        "fotoMempelaiWanita": "http://localhost:4000/uploads/fotoMempelaiWanita-1763647905295-71508707.jpg",
+        "galeriFoto": [
+          "http://localhost:4000/uploads/galeriFoto-1763647905644-88542521.jpg",
+          "http://localhost:4000/uploads/galeriFoto-1763647905645-390540712.jpg",
+          "http://localhost:4000/uploads/galeriFoto-1763647905646-898807475.jpg",
+          "http://localhost:4000/uploads/galeriFoto-1763647905648-806651866.jpg",
+          "http://localhost:4000/uploads/galeriFoto-1763647905650-26307008.jpg",
+          "http://localhost:4000/uploads/galeriFoto-1763647905651-415741162.jpg"
+        ],
+        "musik": "http://localhost:4000/uploads/musik-1763647905300-519362484.mp3",
+        "temaWarna": "navy-blue",
+        "jenisUndangan": "vintage",
+        "agama": "kristen",
+        "catatanKhusus": ""
+      },
+      "slug": "haha-gy2sf8"
     }
   ]
 }

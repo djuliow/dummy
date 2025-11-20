@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { supabase } from "../supabaseClient";
+import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -15,34 +17,24 @@ function Login() {
     setLoading(true);
     setError(null);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
-      navigate("/");
-    } catch (error) {
-      if (error.message === "Invalid login credentials") {
-        setError("Email atau password salah!");
+      const response = await axios.get("http://localhost:3000/users");
+      const user = response.data.find(
+        (user) => user.email === email && user.password === password
+      );
+
+      if (user) {
+        login(user);
+        navigate("/");
       } else {
-        setError(error.message);
+        setError("Email atau password salah!");
       }
+    } catch (error) {
+      setError("Gagal login. Silakan coba lagi nanti.");
+      console.error("Login error:", error);
     } finally {
       setLoading(false);
     }
   };
-
-  async function handleGoogleLogin() {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: window.location.origin,
-      },
-    });
-    if (error) {
-      setError("Gagal login dengan Google: " + error.message);
-    }
-  }
 
   return (
     <div className="min-h-screen bg-linear-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-x-hidden relative flex items-center justify-center px-4 py-12 transition-colors duration-300">
@@ -208,32 +200,6 @@ function Login() {
               {loading ? "Masuk..." : "Masuk"}
             </button>
           </form>
-
-          {/* Divider */}
-          <div className="relative my-8">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-3 bg-white dark:bg-gray-800 text-gray-500 dark:text-white font-medium">
-                Atau
-              </span>
-            </div>
-          </div>
-
-          {/* Google Login */}
-          <button
-            onClick={handleGoogleLogin}
-            type="button"
-            className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 text-gray-700 font-medium py-3 rounded-xl hover:bg-gray-50 hover:border-indigo-300 transition shadow-sm"
-          >
-            <img
-              src="https://www.google.com/favicon.ico"
-              alt="Google"
-              className="w-5 h-5"
-            />
-            Lanjutkan dengan Google
-          </button>
         </div>
 
         <p className="text-center text-gray-600 dark:text-gray-300 mt-8">

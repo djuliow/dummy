@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 
 function Harga() {
-  const { session } = useAuth();
+  const { session, updateSubscription } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -25,28 +25,15 @@ function Harga() {
   }, []);
 
   const payWithToken = (token) => {
-    window.snap.pay(token, {
-      onSuccess: function (result) {
-        setPendingToken(null); // Hapus token jika pembayaran sukses
-        navigate(
-          `/payment-status?order_id=${result.order_id}&status_code=${result.status_code}&transaction_status=${result.transaction_status}`
-        );
-      },
-      onPending: function (result) {
-        // JANGAN NAVIGASI. Biarkan pengguna menyelesaikan pembayaran di popup.
-        console.log("Payment is pending:", result);
-      },
-      onError: function (result) {
-        setPendingToken(null); // Hapus token jika pembayaran error
-        navigate(
-          `/payment-status?order_id=${result.order_id}&status_code=${result.status_code}&transaction_status=failure`
-        );
-      },
-      onClose: function () {
-        // Saat popup ditutup, token tetap tersimpan di state `pendingToken`
-        console.log("Popup closed, payment pending...");
-      },
-    });
+    // Dummy implementation: Simulate successful payment
+    console.log("Dummy payment with token:", token);
+    setTimeout(() => {
+      updateSubscription('premium');
+      setPendingToken(null);
+      navigate(
+        `/payment-status?order_id=dummy_${Date.now()}&status_code=200&transaction_status=settlement`
+      );
+    }, 1500); // Simulate network delay
   };
 
   const createNewPayment = async (plan) => {
@@ -59,29 +46,14 @@ function Harga() {
     }
 
     try {
-      const response = await fetch("/api/payments/create-transaction", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({ plan: plan.planId || "premium_monthly" }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || "Gagal membuat transaksi.");
-      }
-
-      if (data.token) {
-        setPendingToken(data.token); // Simpan token baru
-        payWithToken(data.token); // Langsung buka popup
-      } else {
-        throw new Error("Token pembayaran tidak diterima dari server.");
-      }
+      // Dummy implementation: Simulate creating a token
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call delay
+      const dummyToken = `dummy-token-${Date.now()}`;
+      setPendingToken(dummyToken);
+      payWithToken(dummyToken);
     } catch (err) {
-      setError(err.message);
+      setError("Gagal membuat transaksi dummy.");
+      console.error("Dummy payment error:", err);
     } finally {
       setLoading(false);
     }

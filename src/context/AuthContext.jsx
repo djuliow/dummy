@@ -1,70 +1,59 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import axios from 'axios';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    // Function to fetch user profile using .then()
-    const fetchUserProfile = (user) => {
-      if (!user) {
-        setUserProfile(null);
-        return;
-      }
-      supabase
-        .from('users')
-        .select('subscription_status')
-        .eq('id', user.id)
-        .single()
-        .then(({ data, error }) => {
-          if (error && error.code !== 'PGRST116') {
-            console.error("Error fetching user profile:", error);
-            setUserProfile({ subscription_status: 'free' });
-          } else if (data) {
-            setUserProfile(data);
-          } else {
-            setUserProfile({ subscription_status: 'free' });
-          }
-        })
-        .catch(e => {
-            console.error("Exception fetching user profile:", e);
-            setUserProfile({ subscription_status: 'free' });
-        });
+  const login = (userData) => {
+    const dummySession = {
+      user: {
+        id: userData.id,
+        email: userData.email,
+      },
+      access_token: 'dummy-token',
     };
+    setSession(dummySession);
+    setUserProfile({ subscription_status: userData.subscription_status || 'free' });
+  };
 
-    // Initial load
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      fetchUserProfile(session?.user);
-      setLoading(false);
-    });
+  const logout = () => {
+    setSession(null);
+    setUserProfile(null);
+  };
 
-    // Set up listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      fetchUserProfile(session?.user);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+  const updateSubscription = async (newStatus) => {
+    if (!session || !session.user) {
+      console.error("Cannot update subscription, no user is logged in.");
+      return;
+    }
+    
+    try {
+      const response = await axios.patch(`http://localhost:3000/users/${session.user.id}`, {
+        subscription_status: newStatus,
+      });
+      setUserProfile({ subscription_status: response.data.subscription_status });
+    } catch (error) {
+      console.error("Failed to update subscription:", error);
+    }
+  };
 
   const value = {
     session,
     user: session?.user,
     userProfile,
     loading,
-    logout: () => supabase.auth.signOut(),
+    login,
+    logout,
+    updateSubscription,
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 }

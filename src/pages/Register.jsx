@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { supabase } from "../supabaseClient";
+import axios from "axios";
 
 function Register() {
   const navigate = useNavigate();
@@ -23,41 +23,20 @@ function Register() {
     setLoading(true);
     setError(null);
     try {
-      const { error, data } = await supabase.auth.signUp({ 
-        email, 
+      await axios.post("http://localhost:3000/users", {
+        name,
+        email,
         password,
-        options: {
-          emailRedirectTo: window.location.origin
-        }
+        subscription_status: 'free',
       });
-      if (error) throw error;
-      
-      // If registration is successful and the user is logged in directly
-      // (e.g., no email confirmation required), redirect to homepage
-      if (data.session) {
-        navigate("/");
-      } else {
-        // If email confirmation is required, show success message
-        setRegistrationSuccess(true);
-      }
+      setRegistrationSuccess(true);
     } catch (error) {
-      setError(error.message);
+      setError("Gagal mendaftar. Silakan coba lagi nanti.");
+      console.error("Registration error:", error);
     } finally {
       setLoading(false);
     }
   };
-
-  async function handleGoogleLogin() {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: window.location.origin
-      }
-    });
-    if (error) {
-      setError("Gagal login dengan Google: " + error.message);
-    }
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-x-hidden relative flex items-center justify-center px-4 py-12 transition-colors duration-300">
@@ -319,32 +298,6 @@ function Register() {
                 {loading ? "Mendaftar..." : "Daftar"}
               </button>
             </form>
-
-            {/* Divider */}
-            <div className="relative my-8">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-3 bg-white dark:bg-gray-800 text-gray-500 dark:text-white font-medium">
-                  Atau
-                </span>
-              </div>
-            </div>
-
-            {/* Google Login */}
-            <button
-              onClick={handleGoogleLogin}
-              type="button"
-              className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white font-medium py-3 rounded-xl hover:bg-gray-50 hover:border-indigo-300 transition shadow-sm"
-            >
-              <img
-                src="https://www.google.com/favicon.ico"
-                alt="Google"
-                className="w-5 h-5"
-              />
-              Lanjutkan dengan Google
-            </button>
           </div>
         )}
 

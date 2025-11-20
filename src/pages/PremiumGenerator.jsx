@@ -1,58 +1,32 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "../supabaseClient";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 const uploadAssets = async (files, userId) => {
-  const uploadedUrls = {};
-  const bucketName = "invitation-assets";
-  const uploadFile = async (file, folder) => {
-    if (!file) return null;
-    const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-    const filePath = `${userId}/${folder}/${Date.now()}-${sanitizedName}`;
-    const { error } = await supabase.storage
-      .from(bucketName)
-      .upload(filePath, file);
-    if (error) {
-      throw new Error(`Gagal meng-upload ${file.name}: ${error.message}`);
-    }
-    const { data } = supabase.storage.from(bucketName).getPublicUrl(filePath);
-    return data.publicUrl;
+  // Dummy implementation
+  console.log("Uploading files for user:", userId, files);
+  await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate upload time
+  const uploadedUrls = {
+    fotoMempelaiWanita: "/assets/adith.jpg",
+    fotoMempelaiPria: "/assets/adriel.jpg",
+    musik: "/assets/dummy-music.mp3",
+    galeriFoto: ["/assets/bg_hero.jpg", "/assets/bg_hero1.jpg"],
   };
-  if (files.fotoMempelaiWanita) {
-    uploadedUrls.fotoMempelaiWanita = await uploadFile(
-      files.fotoMempelaiWanita,
-      "bride"
-    );
-  }
-  if (files.fotoMempelaiPria) {
-    uploadedUrls.fotoMempelaiPria = await uploadFile(
-      files.fotoMempelaiPria,
-      "groom"
-    );
-  }
-  if (files.musik) {
-    uploadedUrls.musik = await uploadFile(files.musik, "music");
-  }
-  if (files.galeriFoto && files.galeriFoto.length > 0) {
-    uploadedUrls.galeriFoto = await Promise.all(
-      files.galeriFoto.map((file) => uploadFile(file, "gallery"))
-    );
-  }
+  console.log("Dummy asset URLs:", uploadedUrls);
   return uploadedUrls;
 };
 
-const saveInvitationData = async (invitationData) => {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+const saveInvitationData = async (invitationData, user) => {
   if (!user) throw new Error("User tidak ditemukan.");
+
   const randomString = Math.random().toString(36).substring(2, 8);
   const slug = `${
     invitationData.namaMempelaiPria || "undangan"
   }-${randomString}`
     .toLowerCase()
     .replace(/\s+/g, "-");
+
   const newInvitation = {
     user_id: user.id,
     template_id: null,
@@ -60,18 +34,9 @@ const saveInvitationData = async (invitationData) => {
     generated_content: invitationData,
     slug: slug,
   };
-  const { data: savedInvitation, error: insertError } = await supabase
-    .from("invitations")
-    .insert(newInvitation)
-    .select()
-    .single();
-  if (insertError) {
-    if (insertError.code === "23505") {
-      throw new Error("Gagal membuat link unik, silakan coba generate lagi.");
-    }
-    throw insertError;
-  }
-  return savedInvitation;
+
+  const response = await axios.post("http://localhost:3000/invitations", newInvitation);
+  return response.data;
 };
 
 function PremiumGenerator() {
@@ -194,14 +159,13 @@ function PremiumGenerator() {
     }
     setShowChat(true);
     setIsLoading(true);
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
+    
+    if (!session || !session.user) {
       alert("Anda harus login untuk membuat undangan.");
       setIsLoading(false);
       return;
     }
+
     try {
       setLoadingMessage("Meng-upload gambar dan musik...");
       const assetUrls = await uploadAssets(
@@ -211,41 +175,17 @@ function PremiumGenerator() {
           galeriFoto: formData.galeriFoto,
           musik: formData.musik,
         },
-        user.id
+        session.user.id
       );
       const dataForDb = { ...formData, ...assetUrls };
-      // Note: Do not delete the asset URLs as they are needed for the invitation generation
       setLoadingMessage("Menyimpan data undangan...");
-      const savedInvitation = await saveInvitationData(dataForDb);
+      const savedInvitation = await saveInvitationData(dataForDb, session.user);
 
-      // Prepare data for the AI backend, ensuring the slug is included
-      const dataForBackend = {
-        ...dataForDb,
-        slug: savedInvitation.slug,
-      };
-
+      // Dummy backend processing
       setLoadingMessage("Menghubungi AI untuk membuat file undangan...");
-      const backendUrl =
-        process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
-      const endpoint =
-        user.subscription_status === "free"
-          ? `${backendUrl}/invitations/free-generate`
-          : `${backendUrl}/invitations/generate`;
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dataForBackend),
-      });
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(
-          `Error dari Backend: ${errorData?.detail || response.statusText}`
-        );
-      }
-      const finalUrl = `${backendUrl}/invitations/${savedInvitation.slug}`;
-      if (!finalUrl) {
-        throw new Error("Backend tidak mengembalikan URL undangan.");
-      }
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      const finalUrl = `http://localhost:3000/invitations/${savedInvitation.slug}`;
       const botResponse = {
         id: messages.length + 2,
         type: "bot",

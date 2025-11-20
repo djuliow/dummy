@@ -28,7 +28,11 @@
       "description": "Untuk memulai",
       "buttonText": "Mulai Gratis",
       "buttonLink": "/chat",
-      "features": ["Desain terbatas", "Fitur dasar", "Hingga 100 undangan"]
+      "features": [
+        "Desain terbatas",
+        "Fitur dasar",
+        "Hingga 100 undangan"
+      ]
     },
     {
       "name": "Premium",
@@ -66,10 +70,22 @@
     }
   ],
   "navLinks": [
-    { "to": "/", "text": "Beranda" },
-    { "to": "/tentang", "text": "Tentang Kami" },
-    { "to": "/template", "text": "Template" },
-    { "to": "/harga", "text": "Harga" }
+    {
+      "to": "/",
+      "text": "Beranda"
+    },
+    {
+      "to": "/tentang",
+      "text": "Tentang Kami"
+    },
+    {
+      "to": "/template",
+      "text": "Template"
+    },
+    {
+      "to": "/harga",
+      "text": "Harga"
+    }
   ],
   "hero": {
     "title": "Buat Undangan Pernikahan Digital yang Indah dan Praktis, Dirancang Otomatis oleh AI.",
@@ -81,18 +97,42 @@
   },
   "footer": {
     "productLinks": [
-      { "href": "#features", "text": "Fitur" },
-      { "href": "#pricing", "text": "Harga" },
-      { "href": "#testimonials", "text": "Testimoni" },
-      { "to": "/template#templates", "text": "Template" }
+      {
+        "href": "#features",
+        "text": "Fitur"
+      },
+      {
+        "href": "#pricing",
+        "text": "Harga"
+      },
+      {
+        "href": "#testimonials",
+        "text": "Testimoni"
+      },
+      {
+        "to": "/template#templates",
+        "text": "Template"
+      }
     ],
     "companyLinks": [
-      { "href": "/tentang", "text": "Tentang Kami" },
-      { "href": "https://www.instagram.com/cartaai", "text": "Kontak" }
+      {
+        "href": "/tentang",
+        "text": "Tentang Kami"
+      },
+      {
+        "href": "https://www.instagram.com/cartaai",
+        "text": "Kontak"
+      }
     ],
     "legalLinks": [
-      { "href": "#", "text": "Kebijakan Privasi" },
-      { "href": "#", "text": "Syarat & Ketentuan" }
+      {
+        "href": "#",
+        "text": "Kebijakan Privasi"
+      },
+      {
+        "href": "#",
+        "text": "Syarat & Ketentuan"
+      }
     ],
     "copyright": "© 2025 CartaAI. Semua hak dilindungi."
   },
@@ -130,10 +170,30 @@
       }
     ],
     "howItWorks": [
-      { "step": 1, "icon": "palette", "title": "Pilih Tema", "description": "Klasik, modern, rustic, atau custom sesuai selera." },
-      { "step": 2, "icon": "text_fields", "title": "Masukkan Detail", "description": "Nama pasangan, tanggal, lokasi, dan pesan spesial." },
-      { "step": 3, "icon": "auto_awesome", "title": "AI Generate", "description": "AI merancang undangan berdasarkan preferensi Anda." },
-      { "step": 4, "icon": "share", "title": "Bagikan", "description": "Undangan digital siap dikirim atau dicetak." }
+      {
+        "step": 1,
+        "icon": "palette",
+        "title": "Pilih Tema",
+        "description": "Klasik, modern, rustic, atau custom sesuai selera."
+      },
+      {
+        "step": 2,
+        "icon": "text_fields",
+        "title": "Masukkan Detail",
+        "description": "Nama pasangan, tanggal, lokasi, dan pesan spesial."
+      },
+      {
+        "step": 3,
+        "icon": "auto_awesome",
+        "title": "AI Generate",
+        "description": "AI merancang undangan berdasarkan preferensi Anda."
+      },
+      {
+        "step": 4,
+        "icon": "share",
+        "title": "Bagikan",
+        "description": "Undangan digital siap dikirim atau dicetak."
+      }
     ],
     "teamMembers": [
       {
@@ -188,5 +248,20 @@
       "description": "Ornamen detail dengan nuansa resmi dan berwibawa.",
       "buttonText": "Gunakan Template"
     }
-  ]
+  ],
+  "users": [
+    {
+      "id": 1,
+      "email": "test@example.com",
+      "password": "password"
+    },
+    {
+      "id": "efd3",
+      "name": "julio",
+      "email": "julio@gmail.com",
+      "password": "11111111",
+      "subscription_status": "premium"
+    }
+  ],
+  "invitations": []
 }

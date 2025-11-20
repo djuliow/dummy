@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 function UpdatePassword() {
   const navigate = useNavigate();
+  const query = useQuery();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -13,25 +19,26 @@ function UpdatePassword() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setMessage('Anda sekarang bisa membuat password baru.');
-      } else {
-        // If not in password recovery, redirect away.
-        // navigate('/');
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [navigate]);
+    const userEmail = query.get('email');
+    if (userEmail) {
+      setEmail(userEmail);
+      setMessage(`Anda akan mengubah password untuk ${userEmail}.`);
+    } else {
+      setError("Email tidak ditemukan. Silakan ulangi proses lupa password.");
+    }
+  }, [query]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
     setError('');
+
+    if (!email) {
+      setError("Email tidak ditemukan. Silakan ulangi proses lupa password.");
+      setLoading(false);
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError("Konfirmasi kata sandi tidak cocok!");
@@ -40,12 +47,22 @@ function UpdatePassword() {
     }
 
     try {
-      const { error } = await supabase.auth.updateUser({ password: password });
-      if (error) throw error;
+      // Find user by email first
+      const response = await axios.get(`http://localhost:3000/users?email=${email}`);
+      const userToUpdate = response.data[0];
+
+      if (!userToUpdate) {
+        setError("User dengan email ini tidak ditemukan.");
+        setLoading(false);
+        return;
+      }
+      
+      await axios.patch(`http://localhost:3000/users/${userToUpdate.id}`, { password: password });
       setMessage('Password Anda telah berhasil diperbarui! Anda akan diarahkan ke halaman login.');
       setTimeout(() => navigate('/login'), 3000);
     } catch (error) {
-      setError(error.message);
+      setError('Gagal memperbarui password. Silakan coba lagi nanti.');
+      console.error('Update password error:', error);
     } finally {
       setLoading(false);
     }

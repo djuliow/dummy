@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { supabase } from '../supabaseClient';
 import { Link } from 'react-router-dom';
 
 function ForgotPassword() {
@@ -14,11 +13,16 @@ function ForgotPassword() {
     setMessage('');
     setError('');
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/update-password`,
-      });
-      if (error) throw error;
-      setMessage('Instruksi untuk reset password telah dikirim ke email Anda.');
+      // Dummy implementation: just pretend to send an email
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setMessage(
+        <>
+          Instruksi dummy telah dikirim. <br />
+          <Link to={`/update-password?email=${encodeURIComponent(email)}`} className="font-bold text-indigo-600 hover:underline">
+            Lanjutkan untuk mengubah password.
+          </Link>
+        </>
+      );
     } catch (error) {
       setError(error.message);
     } finally {
@@ -49,7 +53,7 @@ function ForgotPassword() {
             <div className="w-28 h-1 bg-linear-to-r from-indigo-500 to-purple-500 rounded-full mx-auto"></div>
             <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 w-5 h-5 bg-white dark:bg-gray-800 rounded-full border-4 border-indigo-500 shadow-md"></div>
           </div>
-          <p className="text-gray-600 dark:text-gray-300">Masukkan email Anda, dan kami akan mengirimkan link untuk me-reset password Anda.</p>
+          <p className="text-gray-600 dark:text-gray-300">Masukkan email Anda. Dalam sistem dummy ini, kami akan menampilkan pesan sukses (email tidak benar-benar terkirim).</p>
         </div>
 
         {message && (

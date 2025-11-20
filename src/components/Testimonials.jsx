@@ -1,26 +1,19 @@
 
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function Testimonials() {
-  const testimonials = [
-    {
-      text: '"CartaAI membuat undangan pernikahan kami jadi lebih berkesan! Prosesnya cepat, hasilnya cantik."',
-      name: 'Maya & Rio',
-      role: 'Pasangan Pernikahan',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAZHKDfUSumamkw3F4_LFPRYcDPvRH1bdBWPRNIWutuW_D0xNcijtrjSJ0_IzpmB66KrNvfbA4Z9-CU48TxpX6PkaSxiy4UitBwF55QSjHjPy0dB2WOcxDBoPphlDM9iMxYF4cbJZ5Eog6K7AQ87WeiCLWtl5BpxvPzy2cMpfpi6zK9nDJlCOkkcOTs3xPzEcXa7fXtOMKtfYwSBqi4oMPsvKg1M3fqgmmOWZgSUi00FcreJ-b85x1oFoHALgaFip5ParYBI9PsTA'
-    },
-    {
-      text: '“Kami sangat puas dengan layanan CartaAI. Desain undangannya elegan dan sesuai dengan tema pernikahan kami!”',
-      name: 'Budi & Sarah',
-      role: 'Pasangan Pernikahan',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDSmVprl716kmIPYcupcSlwLlQlfp2DJCSzIMfO0HlzBTzXQS9SEJypycxLv8_s3EJVCDVLMS41qeEun36XHzTbdFg8cIfU3NFOvlgt7P3uFfGyo9LV6EUrkjLRJnR9qRAHEP7cRL5KLA6NrJ0092Dm6IMCkqn62A2v92u7d1Vm-RId5qbCb8Kz2SlVjNTvbQtqog4_d4Ndyr-wKDOusx4U7dkvZDPUOqVDGJ6H-XxX7Ev9xAy3BVxWkWUJlKmbbALBITcEhNLOMw'
-    },
-    {
-      text: '“Undangan pernikahan kami jadi unik dan berkesan berkat CartaAI. Prosesnya mudah dan hasilnya luar biasa indah!”',
-      name: 'Arif',
-      role: 'Mempelai laki-laki',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCLfXoFhhtTjEiDN2VzF55ZF5U8BuC9xn6VkQu_ywmlwSflevwrMkoymSVOPXUTnpi4NNO8kiTbVfylfE6auuVncxodnRum1uzoP1tqJ_sFOv6NI71EO5eFYPHBEUc5qMrJmJF_u0HwkV0G9oZKiNjjeoxtzxjalVKgL0tGoFxYqbDF5QMdtSGhjb2MxExMmKqspPIdfVH5KDTNuSGUU-vNmOo0rW9PMzD1RStg0_kLIlXHuI8txGDkBeWC5nwHrhDgkQSFlPrj4Q'
-    }
-  ];
+  const [testimonials, setTestimonials] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/testimonials')
+      .then(response => {
+        setTestimonials(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the testimonials!', error);
+      });
+  }, []);
 
   return (
     <section className="py-16 bg-gradient-to-br from-indigo-50/20 to-purple-50/10 dark:from-gray-900 dark:to-gray-800 px-4 sm:px-6 lg:px-8 relative overflow-x-hidden" id="testimonials">

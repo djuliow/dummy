@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Footer() {
+  const [footer, setFooter] = useState({
+    productLinks: [],
+    companyLinks: [],
+    legalLinks: [],
+    copyright: ""
+  });
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/footer')
+      .then(response => {
+        setFooter(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the footer data!', error);
+      });
+  }, []);
+
   return (
     <footer
       className="text-white"
@@ -23,66 +41,51 @@ function Footer() {
           <div>
             <h4 className="font-bold">Produk</h4>
             <ul className="mt-4 space-y-2 text-sm text-slate-200">
-              <li>
-                <a className="hover:text-white" href="#features">
-                  Fitur
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#pricing">
-                  Harga
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#testimonials">
-                  Testimoni
-                </a>
-              </li>
-              <li>
-                <Link className="hover:text-white" to="/template#templates">
-                  Template
-                </Link>
-              </li>
+              {footer.productLinks.map((link, index) => (
+                <li key={index}>
+                  {link.to ? (
+                    <Link className="hover:text-white" to={link.to}>
+                      {link.text}
+                    </Link>
+                  ) : (
+                    <a className="hover:text-white" href={link.href}>
+                      {link.text}
+                    </a>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h4 className="font-bold">Perusahaan</h4>
             <ul className="mt-4 space-y-2 text-sm text-slate-200">
-              <li>
-                <a className="hover:text-white" href="/tentang">
-                  Tentang Kami
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="https://www.instagram.com/cartaai">
-                  Kontak
-                </a>
-              </li>
-              <li>
-              </li>
+              {footer.companyLinks.map((link, index) => (
+                <li key={index}>
+                  <a className="hover:text-white" href={link.href}>
+                    {link.text}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h4 className="font-bold">Legal</h4>
             <ul className="mt-4 space-y-2 text-sm text-slate-200">
-              <li>
-                <a className="hover:text-white" href="#">
-                  Kebijakan Privasi
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-white" href="#">
-                  Syarat & Ketentuan
-                </a>
-              </li>
+              {footer.legalLinks.map((link, index) => (
+                <li key={index}>
+                  <a className="hover:text-white" href={link.href}>
+                    {link.text}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
         <div className="mt-12 border-t border-white pt-8 text-center text-sm text-slate-300 md:flex md:justify-between">
-          <p>© 2025 CartaAI. Semua hak dilindungi.</p>
+          <p>{footer.copyright}</p>
           <div className="mt-4 flex justify-center gap-4 md:mt-0">
             <a className="hover:text-white" href="https://www.instagram.com/cartaai" >
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">

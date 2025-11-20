@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 function Hero() {
   const { session, userProfile } = useAuth();
+  const [hero, setHero] = useState({});
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/hero')
+      .then(response => {
+        setHero(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the hero data!', error);
+      });
+  }, []);
 
   return (
     <section className="bg-linear-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 py-16 px-6 relative overflow-x-hidden transition-colors duration-300">
@@ -22,15 +34,19 @@ function Hero() {
           {/* Bagian Kiri - Teks (akan muncul di bawah di mobile) */}
           <div className="flex-1 text-center lg:text-left space-y-6">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900 dark:text-white">
-              Buat Undangan{" "}
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
-                Pernikahan
-              </span>{" "}
-              Digital yang Indah dan Praktis, Dirancang Otomatis oleh AI.{" "}
+              {hero.title && hero.title.split('Pernikahan').map((part, index, array) => 
+                index === array.length - 1 ? part : (
+                  <React.Fragment key={index}>
+                    {part}
+                    <span className="text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+                      Pernikahan
+                    </span>
+                  </React.Fragment>
+                )
+              )}
             </h1>
             <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto lg:mx-0">
-              Buat undangan pernikahan kamu yang kreatif dan personal dengan
-              mudah. Tanpa ribet, cepat, dan hasilnya memukau!
+              {hero.subtitle}
             </p>
 
             {/* Tombol Aksi */}
@@ -53,7 +69,7 @@ function Hero() {
                     e.target.style.boxShadow = "none";
                   }}
                 >
-                  Buat Undangan Sekarang
+                  {hero.button1_premium}
                 </Link>
               ) : (
                 session ? (
@@ -74,7 +90,7 @@ function Hero() {
                       e.target.style.boxShadow = "none";
                     }}
                   >
-                    Coba Gratis
+                    {hero.button1_user}
                   </Link>
                 ) : (
                   <Link
@@ -94,7 +110,7 @@ function Hero() {
                       e.target.style.boxShadow = "none";
                     }}
                   >
-                    Coba Gratis
+                    {hero.button1_guest}
                   </Link>
                 )
               )}
@@ -108,7 +124,7 @@ function Hero() {
                   e.target.style.transform = "translateY(0)";
                 }}
               >
-                Lihat Contoh Undangan
+                {hero.button2}
               </a>
             </div>
           </div>

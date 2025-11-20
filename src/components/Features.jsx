@@ -1,28 +1,19 @@
 
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function Features() {
-  const features = [
-    {
-      icon: 'auto_awesome',
-      title: 'Desain Cantik & Variatif',
-      description: 'Pilih dari beragam desain modern dan elegan yang sesuai dengan tema acara Anda.'
-    },
-    {
-      icon: 'rocket_launch',
-      title: 'Instan & Praktis',
-      description: 'Buat undangan dalam hitungan menit dengan antarmuka yang mudah digunakan.'
-    },
-    {
-      icon: 'devices',
-      title: 'Responsif & Interaktif',
-      description: 'Undangan tampil sempurna di semua perangkat, dengan fitur interaktif yang menarik.'
-    },
-    {
-      icon: 'edit',
-      title: 'Personalisasi Mudah',
-      description: 'Tambahkan sentuhan pribadi dengan mudah, mulai dari teks hingga foto dan musik.'
-    }
-  ];
+  const [features, setFeatures] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/features')
+      .then(response => {
+        setFeatures(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the features!', error);
+      });
+  }, []);
 
   return (
     <section className="py-16 bg-linear-to-br from-indigo-50/20 to-purple-50/10 dark:from-gray-900 dark:to-gray-900 px-4 sm:px-6 lg:px-8 relative overflow-x-hidden" id="features">

@@ -1,43 +1,27 @@
 // src/pages/Tentang.js
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function Tentang() {
   const [selectedMember, setSelectedMember] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tentang, setTentang] = useState({
+    pageDescription: "",
+    visionMission: [],
+    whyUs: [],
+    howItWorks: [],
+    teamMembers: [],
+  });
 
-  const teamMembers = [
-    {
-      name: "Prince",
-      role: "Project Manager",
-      image: "/assets/prince.jpg",
-      bio: "Visioner di balik cartaAI.",
-    },
-    {
-      name: "Adriel",
-      role: "Lead Developer & AI Specialist",
-      image: "/assets/adriel.jpg",
-      bio: "Memimpin pengembangan solusi berbasis AI yang menyatukan kecerdasan mesin dengan pengalaman pengguna yang intuitif dan responsif.",
-      isLead: true,
-    },
-    {
-      name: "Julio",
-      role: "AI Specialist & Backend Developer",
-      image: "/assets/julio.jpg",
-      bio: "Sebagai AI Specialist dan Backend Developer, saya berfokus merancang sistem cerdas yang scalable dan siap menghadirkan pengalaman real-time yang optimal.",
-    },
-    {
-      name: "Adith",
-      role: "UI/UX & Frontend Developer",
-      image: "/assets/adith.jpg",
-      bio: "Menciptakan pengalaman digital yang intuitif dan estetis, di mana setiap interaksi terasa alami dan bermakna.",
-    },
-    {
-      name: "Andro",
-      role: "Marketing Manager",
-      image: "/assets/sandro.jpg",
-      bio: "Menciptakan strategi pemasaran yang menggabungkan kreativitas dan analisis untuk hasil yang nyata dan berkelanjutan.",
-    },
-  ];
+  useEffect(() => {
+    axios.get('http://localhost:3000/tentang')
+      .then(response => {
+        setTentang(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the tentang data!', error);
+      });
+  }, []);
 
   const openModal = (member) => {
     setSelectedMember(member);
@@ -92,12 +76,9 @@ function Tentang() {
             <span className="font-semibold text-indigo-700 dark:text-indigo-400">
               cartaAI
             </span>{" "}
-            hadir untuk membantu pasangan calon pengantin menciptakan undangan
-            pernikahan yang personal, elegan, dan unik — dengan kekuatan AI yang
-            dipadukan dengan sentuhan manusiawi. Kami percaya:{" "}
+            {tentang.pageDescription && tentang.pageDescription.split('cartaAI')[1].split('setiap kisah cinta')[0]}
             <span className="italic">
-              setiap kisah cinta layak diabadikan dalam undangan yang tak
-              terlupakan.
+              setiap kisah cinta {tentang.pageDescription && tentang.pageDescription.split('setiap kisah cinta')[1]}
             </span>
           </p>
         </div>
@@ -107,21 +88,7 @@ function Tentang() {
       <div className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                title: "Visi Kami",
-                icon: "visibility",
-                gradient:
-                  "from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400",
-                desc: "Menjadi solusi terdepan untuk undangan pernikahan digital yang menggabungkan keindahan desain, personalisasi mendalam, dan kecanggihan AI — tanpa kompromi pada makna.",
-              },
-              {
-                title: "Misi Kami",
-                icon: "flag",
-                gradient: "from-purple-600 to-indigo-600",
-                desc: "Memberikan pengalaman pembuatan undangan dalam 3 menit, desain eksklusif (bukan template), dan pilihan digital/cetak premium yang ramah lingkungan.",
-              },
-            ].map((item, i) => (
+            {tentang.visionMission.map((item, i) => (
               <div
                 key={i}
                 className="relative rounded-2xl p-1 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 cursor-pointer"
@@ -172,23 +139,7 @@ function Tentang() {
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {[
-            {
-              icon: "bolt",
-              title: "⚡ Cepat & Hemat",
-              desc: "Dari ide ke undangan siap kirim hanya dalam hitungan menit — tanpa biaya cetak berlebihan.",
-            },
-            {
-              icon: "brush",
-              title: "🎨 Desain Unik",
-              desc: "AI kami belajar dari ribuan desain premium untuk menghasilkan karya yang benar-benar orisinal.",
-            },
-            {
-              icon: "account_circle",
-              title: "❤️ Personalisasi",
-              desc: "Setiap detail — dari font hingga ilustrasi — mencerminkan kepribadian dan kisah Anda.",
-            },
-          ].map((item, i) => (
+          {tentang.whyUs.map((item, i) => (
             <div
               key={i}
               className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-7 shadow-lg border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:-translate-y-1 cursor-pointer"
@@ -231,12 +182,7 @@ function Tentang() {
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {[
-            { step: 1, icon: "palette", title: "Pilih Tema" },
-            { step: 2, icon: "text_fields", title: "Masukkan Detail" },
-            { step: 3, icon: "auto_awesome", title: "AI Generate" },
-            { step: 4, icon: "share", title: "Bagikan" },
-          ].map((item, i) => (
+          {tentang.howItWorks.map((item, i) => (
             <div
               key={i}
               className="text-center group relative transition-all duration-300 hover:scale-105 cursor-pointer"
@@ -257,13 +203,7 @@ function Tentang() {
                   {item.title}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm max-w-[200px] mx-auto">
-                  {item.title === "Pilih Tema"
-                    ? "Klasik, modern, rustic, atau custom sesuai selera."
-                    : item.title === "Masukkan Detail"
-                    ? "Nama pasangan, tanggal, lokasi, dan pesan spesial."
-                    : item.title === "AI Generate"
-                    ? "AI merancang undangan berdasarkan preferensi Anda."
-                    : "Undangan digital siap dikirim atau dicetak."}
+                  {item.description}
                 </p>
               </div>
             </div>
@@ -286,7 +226,7 @@ function Tentang() {
           </p>
         </div>
         <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
-          {teamMembers.map((member, index) => (
+          {tentang.teamMembers.map((member, index) => (
             <div
               key={index}
               className="text-center group transform transition-all duration-300 hover:scale-110 cursor-pointer"

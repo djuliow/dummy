@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useDarkMode } from "../context/DarkModeContext";
+import axios from "axios";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [navLinks, setNavLinks] = useState([]);
   const { session, logout, userProfile } = useAuth();
   const { darkMode, toggleDarkMode } = useDarkMode();
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/navLinks')
+      .then(response => {
+        setNavLinks(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the nav links!', error);
+      });
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -30,46 +42,19 @@ function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
-          <Link
-            className={`${
-              location.pathname === "/"
-                ? "text-blue-600 dark:text-indigo-400"
-                : "text-secondary dark:text-gray-300 hover:text-blue-600 dark:hover:text-indigo-400"
-            } text-sm font-medium transition-colors`}
-            to="/"
-          >
-            Beranda
-          </Link>
-          <Link
-            className={`${
-              location.pathname === "/tentang"
-                ? "text-blue-600 dark:text-indigo-400"
-                : "text-secondary dark:text-gray-300 hover:text-blue-600 dark:hover:text-indigo-400"
-            } text-sm font-medium transition-colors`}
-            to="/tentang"
-          >
-            Tentang Kami
-          </Link>
-          <Link
-            className={`${
-              location.pathname === "/template"
-                ? "text-blue-600 dark:text-indigo-400"
-                : "text-secondary dark:text-gray-300 hover:text-blue-600 dark:hover:text-indigo-400"
-            } text-sm font-medium transition-colors`}
-            to="/template"
-          >
-            Template
-          </Link>
-          <Link
-            className={`${
-              location.pathname === "/harga"
-                ? "text-blue-600 dark:text-indigo-400"
-                : "text-secondary dark:text-gray-300 hover:text-blue-600 dark:hover:text-indigo-400"
-            } text-sm font-medium transition-colors`}
-            to="/harga"
-          >
-            Harga
-          </Link>
+          {navLinks.map((link) => (
+            <Link
+              key={link.to}
+              className={`${
+                location.pathname === link.to
+                  ? "text-blue-600 dark:text-indigo-400"
+                  : "text-secondary dark:text-gray-300 hover:text-blue-600 dark:hover:text-indigo-400"
+              } text-sm font-medium transition-colors`}
+              to={link.to}
+            >
+              {link.text}
+            </Link>
+          ))}
         </div>
 
         {/* Auth buttons for Desktop */}
@@ -147,50 +132,20 @@ function Navbar() {
           <div className="container mx-auto px-6 py-4">
             <div className="flex flex-col gap-4">
               {/* Navigation Links */}
-              <Link
-                className={`${
-                  location.pathname === "/"
-                    ? "text-blue-800 dark:text-indigo-400"
-                    : "text-gray-900 dark:text-gray-100 hover:text-blue-700 dark:hover:text-indigo-400"
-                } text-sm font-medium transition-colors`}
-                to="/"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Beranda
-              </Link>
-              <Link
-                className={`${
-                  location.pathname === "/tentang"
-                    ? "text-blue-600 dark:text-indigo-400"
-                    : "text-secondary dark:text-gray-300 hover:text-blue-600 dark:hover:text-indigo-400"
-                } text-sm font-medium transition-colors`}
-                to="/tentang"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Tentang
-              </Link>
-              <Link
-                className={`${
-                  location.pathname === "/template"
-                    ? "text-blue-600 dark:text-indigo-400"
-                    : "text-secondary dark:text-gray-300 hover:text-blue-600 dark:hover:text-indigo-400"
-                } text-sm font-medium transition-colors`}
-                to="/template"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Template
-              </Link>
-              <Link
-                className={`${
-                  location.pathname === "/harga"
-                    ? "text-blue-600 dark:text-indigo-400"
-                    : "text-secondary dark:text-gray-300 hover:text-blue-600 dark:hover:text-indigo-400"
-                } text-sm font-medium transition-colors`}
-                to="/harga"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Harga
-              </Link>
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  className={`${
+                    location.pathname === link.to
+                      ? "text-blue-800 dark:text-indigo-400"
+                      : "text-gray-900 dark:text-gray-100 hover:text-blue-700 dark:hover:text-indigo-400"
+                  } text-sm font-medium transition-colors`}
+                  to={link.to}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.text}
+                </Link>
+              ))}
 
               {/* Auth buttons for Mobile */}
               <div className="flex flex-col gap-2 mt-4 border-t pt-4">

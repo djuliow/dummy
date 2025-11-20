@@ -5,9 +5,23 @@ import { useAuth } from "../context/AuthContext";
 function Harga() {
   const { session } = useAuth();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [pendingToken, setPendingToken] = useState(null);
+  const [pricingPlans, setPricingPlans] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/pricingPlans')
+      .then(response => {
+        setPricingPlans(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the pricing plans!', error);
+        setError('Gagal memuat data harga.');
+        setLoading(false);
+      });
+  }, []);
 
   const payWithToken = (token) => {
     window.snap.pay(token, {
@@ -78,31 +92,7 @@ function Harga() {
     }
   };
 
-  const pricingPlans = [
-    {
-      name: "Basic",
-      price: "Gratis",
-      description: "Untuk memulai",
-      buttonText: "Mulai Gratis",
-      buttonLink: "/chat",
-      features: ["Desain terbatas", "Fitur dasar", "Hingga 100 undangan"],
-    },
-    {
-      name: "Premium",
-      price: "Rp 99rb",
-      period: "/bulan",
-      description: "Untuk acara spesial",
-      buttonText: "Pilih Paket Premium",
-      planId: "premium_monthly",
-      isPopular: true,
-      features: [
-        "Semua desain premium",
-        "Fitur lengkap & interaktif",
-        "Hingga 500 undangan",
-        "Dukungan prioritas",
-      ],
-    },
-  ];
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-x-hidden relative transition-colors duration-300">

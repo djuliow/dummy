@@ -1,0 +1,192 @@
+{
+  "features": [
+    {
+      "icon": "auto_awesome",
+      "title": "Desain Cantik & Variatif",
+      "description": "Pilih dari beragam desain modern dan elegan yang sesuai dengan tema acara Anda."
+    },
+    {
+      "icon": "rocket_launch",
+      "title": "Instan & Praktis",
+      "description": "Buat undangan dalam hitungan menit dengan antarmuka yang mudah digunakan."
+    },
+    {
+      "icon": "devices",
+      "title": "Responsif & Interaktif",
+      "description": "Undangan tampil sempurna di semua perangkat, dengan fitur interaktif yang menarik."
+    },
+    {
+      "icon": "edit",
+      "title": "Personalisasi Mudah",
+      "description": "Tambahkan sentuhan pribadi dengan mudah, mulai dari teks hingga foto dan musik."
+    }
+  ],
+  "pricingPlans": [
+    {
+      "name": "Basic",
+      "price": "Gratis",
+      "description": "Untuk memulai",
+      "buttonText": "Mulai Gratis",
+      "buttonLink": "/chat",
+      "features": ["Desain terbatas", "Fitur dasar", "Hingga 100 undangan"]
+    },
+    {
+      "name": "Premium",
+      "price": "Rp 99rb",
+      "period": "/bulan",
+      "description": "Untuk acara spesial",
+      "buttonText": "Pilih Paket Premium",
+      "planId": "premium_monthly",
+      "isPopular": true,
+      "features": [
+        "Semua desain premium",
+        "Fitur lengkap & interaktif",
+        "Hingga 500 undangan",
+        "Dukungan prioritas"
+      ]
+    }
+  ],
+  "testimonials": [
+    {
+      "text": "\"CartaAI membuat undangan pernikahan kami jadi lebih berkesan! Prosesnya cepat, hasilnya cantik.\"",
+      "name": "Maya & Rio",
+      "role": "Pasangan Pernikahan"
+    },
+    {
+      "text": "\"Kami sangat puas dengan layanan CartaAI. Desain undangannya elegan dan sesuai dengan tema pernikahan kami!\"",
+      "name": "Budi & Sarah",
+      "role": "Pasangan Pernikahan",
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDSmVprl716kmIPYcupcSlwLlQlfp2DJCSzIMfO0HlzBTzXQS9SEJypycxLv8_s3EJVCDVLMS41qeEun36XHzTbdFg8cIfU3NFOvlgt7P3uFfGyo9LV6EUrkjLRJnR9qRAHEP7cRL5KLA6NrJ0092Dm6IMCkqn62A2v92u7d1Vm-RId5qbCb8Kz2SlVjNTvbQtqog4_d4Ndyr-wKDOusx4U7dkvZDPUOqVDGJ6H-XxX7Ev9xAy3BVxWkWUJlKmbbALBITcEhNLOMw"
+    },
+    {
+      "text": "\"Undangan pernikahan kami jadi unik dan berkesan berkat CartaAI. Prosesnya mudah dan hasilnya luar biasa indah!\"",
+      "name": "Arif",
+      "role": "Mempelai laki-laki",
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCLfXoFhhtTjEiDN2VzF55ZF5U8BuC9xn6VkQu_ywmlwSflevwrMkoymSVOPXUTnpi4NNO8kiTbVfylfE6auuVncxodnRum1uzoP1tqJ_sFOv6NI71EO5eFYPHBEUc5qMrJmJF_u0HwkV0G9oZKiNjjeoxtzxjalVKgL0tGoFxYqbDF5QMdtSGhjb2MxExMmKqspPIdfVH5KDTNuSGUU-vNmOo0rW9PMzD1RStg0_kLIlXHuI8txGDkBeWC5nwHrhDgkQSFlPrj4Q"
+    }
+  ],
+  "navLinks": [
+    { "to": "/", "text": "Beranda" },
+    { "to": "/tentang", "text": "Tentang Kami" },
+    { "to": "/template", "text": "Template" },
+    { "to": "/harga", "text": "Harga" }
+  ],
+  "hero": {
+    "title": "Buat Undangan Pernikahan Digital yang Indah dan Praktis, Dirancang Otomatis oleh AI.",
+    "subtitle": "Buat undangan pernikahan kamu yang kreatif dan personal dengan mudah. Tanpa ribet, cepat, dan hasilnya memukau!",
+    "button1_premium": "Buat Undangan Sekarang",
+    "button1_user": "Coba Gratis",
+    "button1_guest": "Coba Gratis",
+    "button2": "Lihat Contoh Undangan"
+  },
+  "footer": {
+    "productLinks": [
+      { "href": "#features", "text": "Fitur" },
+      { "href": "#pricing", "text": "Harga" },
+      { "href": "#testimonials", "text": "Testimoni" },
+      { "to": "/template#templates", "text": "Template" }
+    ],
+    "companyLinks": [
+      { "href": "/tentang", "text": "Tentang Kami" },
+      { "href": "https://www.instagram.com/cartaai", "text": "Kontak" }
+    ],
+    "legalLinks": [
+      { "href": "#", "text": "Kebijakan Privasi" },
+      { "href": "#", "text": "Syarat & Ketentuan" }
+    ],
+    "copyright": "© 2025 CartaAI. Semua hak dilindungi."
+  },
+  "tentang": {
+    "pageDescription": "cartaAI hadir untuk membantu pasangan calon pengantin menciptakan undangan pernikahan yang personal, elegan, dan unik — dengan kekuatan AI yang dipadukan dengan sentuhan manusiawi. Kami percaya: setiap kisah cinta layak diabadikan dalam undangan yang tak terlupakan.",
+    "visionMission": [
+      {
+        "title": "Visi Kami",
+        "icon": "visibility",
+        "gradient": "from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400",
+        "desc": "Menjadi solusi terdepan untuk undangan pernikahan digital yang menggabungkan keindahan desain, personalisasi mendalam, dan kecanggihan AI — tanpa kompromi pada makna."
+      },
+      {
+        "title": "Misi Kami",
+        "icon": "flag",
+        "gradient": "from-purple-600 to-indigo-600",
+        "desc": "Memberikan pengalaman pembuatan undangan dalam 3 menit, desain eksklusif (bukan template), dan pilihan digital/cetak premium yang ramah lingkungan."
+      }
+    ],
+    "whyUs": [
+      {
+        "icon": "bolt",
+        "title": "⚡ Cepat & Hemat",
+        "desc": "Dari ide ke undangan siap kirim hanya dalam hitungan menit — tanpa biaya cetak berlebihan."
+      },
+      {
+        "icon": "brush",
+        "title": "🎨 Desain Unik",
+        "desc": "AI kami belajar dari ribuan desain premium untuk menghasilkan karya yang benar-benar orisinal."
+      },
+      {
+        "icon": "account_circle",
+        "title": "❤️ Personalisasi",
+        "desc": "Setiap detail — dari font hingga ilustrasi — mencerminkan kepribadian dan kisah Anda."
+      }
+    ],
+    "howItWorks": [
+      { "step": 1, "icon": "palette", "title": "Pilih Tema", "description": "Klasik, modern, rustic, atau custom sesuai selera." },
+      { "step": 2, "icon": "text_fields", "title": "Masukkan Detail", "description": "Nama pasangan, tanggal, lokasi, dan pesan spesial." },
+      { "step": 3, "icon": "auto_awesome", "title": "AI Generate", "description": "AI merancang undangan berdasarkan preferensi Anda." },
+      { "step": 4, "icon": "share", "title": "Bagikan", "description": "Undangan digital siap dikirim atau dicetak." }
+    ],
+    "teamMembers": [
+      {
+        "name": "Prince",
+        "role": "Project Manager",
+        "image": "/assets/prince.jpg",
+        "bio": "Visioner di balik cartaAI."
+      },
+      {
+        "name": "Adriel",
+        "role": "Lead Developer & AI Specialist",
+        "image": "/assets/adriel.jpg",
+        "bio": "Memimpin pengembangan solusi berbasis AI yang menyatukan kecerdasan mesin dengan pengalaman pengguna yang intuitif dan responsif.",
+        "isLead": true
+      },
+      {
+        "name": "Julio",
+        "role": "AI Specialist & Backend Developer",
+        "image": "/assets/julio.jpg",
+        "bio": "Sebagai AI Specialist dan Backend Developer, saya berfokus merancang sistem cerdas yang scalable dan siap menghadirkan pengalaman real-time yang optimal."
+      },
+      {
+        "name": "Adith",
+        "role": "UI/UX & Frontend Developer",
+        "image": "/assets/adith.jpg",
+        "bio": "Menciptakan pengalaman digital yang intuitif dan estetis, di mana setiap interaksi terasa alami dan bermakna."
+      },
+      {
+        "name": "Andro",
+        "role": "Marketing Manager",
+        "image": "/assets/sandro.jpg",
+        "bio": "Menciptakan strategi pemasaran yang menggabungkan kreativitas dan analisis untuk hasil yang nyata dan berkelanjutan."
+      }
+    ]
+  },
+  "templates": [
+    {
+      "image": "/assets/elegan_1.webp",
+      "title": "Elegan Tradisional",
+      "description": "Nuansa mewah dengan motif etnik dan warna keemasan.",
+      "buttonText": "Gunakan Template"
+    },
+    {
+      "image": "/assets/elegan_2.jpg",
+      "title": "Elegan Minimalis",
+      "description": "Tampilan lembut dengan dominasi putih dan dekorasi sederhana.",
+      "buttonText": "Gunakan Template"
+    },
+    {
+      "image": "/assets/formal_1.webp",
+      "title": "Formal Klasik",
+      "description": "Ornamen detail dengan nuansa resmi dan berwibawa.",
+      "buttonText": "Gunakan Template"
+    }
+  ]
+}

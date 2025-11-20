@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 function Pricing() {
   const { session } = useAuth();
@@ -8,6 +9,17 @@ function Pricing() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [pendingToken, setPendingToken] = useState(null);
+  const [pricingPlans, setPricingPlans] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/pricingPlans')
+      .then(response => {
+        setPricingPlans(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the pricing plans!', error);
+      });
+  }, []);
 
   const payWithToken = (token) => {
     window.snap.pay(token, {
@@ -77,32 +89,6 @@ function Pricing() {
       payWithToken(pendingToken); // Buka lagi popup dengan token yang ada
     }
   };
-
-  const pricingPlans = [
-    {
-      name: "Basic",
-      price: "Gratis",
-      description: "Untuk memulai",
-      buttonText: "Mulai Gratis",
-      buttonLink: "/chat",
-      features: ["Desain terbatas", "Fitur dasar", "Hingga 100 undangan"],
-    },
-    {
-      name: "Premium",
-      price: "Rp 99rb",
-      period: "/bulan",
-      description: "Untuk acara spesial",
-      buttonText: "Pilih Paket Premium",
-      planId: "premium_monthly",
-      isPopular: true,
-      features: [
-        "Semua desain premium",
-        "Fitur lengkap & interaktif",
-        "Hingga 500 undangan",
-        "Dukungan prioritas",
-      ],
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-linear-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-900 overflow-x-hidden relative transition-colors duration-300">

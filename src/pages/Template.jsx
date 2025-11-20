@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Template = () => {
+  const [templates, setTemplates] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/templates')
+      .then(response => {
+        setTemplates(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the templates!', error);
+      });
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-x-hidden relative transition-colors duration-300">
       {/* Subtle noise texture */}
@@ -29,53 +42,22 @@ const Template = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Template 1 */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 transition-transform duration-300 hover:scale-105">
-              <img
-                src="/assets/elegan_1.webp"
-                alt="Elegan Tradisional"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Elegan Tradisional</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">Nuansa mewah dengan motif etnik dan warna keemasan.</p>
-                <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
-                  Gunakan Template
-                </button>
+            {templates.map((template, index) => (
+              <div key={index} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 transition-transform duration-300 hover:scale-105">
+                <img
+                  src={template.image}
+                  alt={template.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{template.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">{template.description}</p>
+                  <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
+                    {template.buttonText}
+                  </button>
+                </div>
               </div>
-            </div>
-
-            {/* Template 2 */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 transition-transform duration-300 hover:scale-105">
-              <img
-                src="/assets/elegan_2.jpg"
-                alt="Elegan Minimalis"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Elegan Minimalis</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">Tampilan lembut dengan dominasi putih dan dekorasi sederhana.</p>
-                <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
-                  Gunakan Template
-                </button>
-              </div>
-            </div>
-
-            {/* Template 3 */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700 transition-transform duration-300 hover:scale-105">
-              <img
-                src="/assets/formal_1.webp"
-                alt="Formal Klasik"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Formal Klasik</h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">Ornamen detail dengan nuansa resmi dan berwibawa.</p>
-                <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2 px-4 rounded-lg hover:opacity-90 transition-opacity">
-                  Gunakan Template
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

@@ -84,11 +84,11 @@ function Navbar() {
               {darkMode ? "light_mode" : "dark_mode"}
             </span>
           </button>
-          
+
           {userProfile?.subscription_status === "premium" && (
             <Link
               to="/premium-generator"
-              className="bg-linear-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-md transition-all duration-300 transform hover:scale-105"
+              className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-md transition-all duration-300 transform hover:scale-105"
             >
               Premium Generator
             </Link>
@@ -96,7 +96,7 @@ function Navbar() {
           {session ? (
             <Link
               to="/profile"
-              className="bg-linear-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold"
+              className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold"
             >
               Profil
             </Link>
@@ -104,13 +104,13 @@ function Navbar() {
             <>
               <Link
                 to="/login"
-                className="bg-linear-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold shadow-none hover:shadow-none"
+                className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold shadow-none hover:shadow-none"
               >
                 Masuk
               </Link>
               <Link
                 to="/register"
-                className="bg-linear-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold shadow-none hover:shadow-none"
+                className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold shadow-none hover:shadow-none"
               >
                 Daftar
               </Link>
@@ -129,7 +129,7 @@ function Navbar() {
               {darkMode ? "light_mode" : "dark_mode"}
             </span>
           </button>
-          
+
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -197,7 +197,7 @@ function Navbar() {
                 {userProfile?.subscription_status === "premium" && (
                   <Link
                     to="/premium-generator"
-                    className="bg-linear-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-md transition-all duration-300 transform hover:scale-105 text-center block"
+                    className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-md transition-all duration-300 transform hover:scale-105 text-center block"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Premium Generator
@@ -206,7 +206,7 @@ function Navbar() {
                 {session ? (
                   <Link
                     to="/profile"
-                    className="bg-linear-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold text-center block"
+                    className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold text-center block"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Profil
@@ -215,14 +215,14 @@ function Navbar() {
                   <>
                     <Link
                       to="/login"
-                      className="bg-linear-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold text-center block"
+                      className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold text-center block"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Masuk
                     </Link>
                     <Link
                       to="/register"
-                      className="bg-linear-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold text-center block"
+                      className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:from-purple-600 hover:to-indigo-500 transition-all duration-300 rounded-lg px-4 py-2 text-sm font-bold text-center block"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Daftar

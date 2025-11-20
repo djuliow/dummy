@@ -15,7 +15,6 @@ import Register from './pages/Register';
 import Chat from './pages/Chat';
 import PremiumGenerator from './pages/PremiumGenerator';
 import Payment from './pages/Payment';
-import TemplateUsage from './pages/TemplateUsage';
 
 import { AuthProvider } from './context/AuthContext';
 import { DarkModeProvider } from './context/DarkModeContext';
@@ -37,7 +36,6 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/template" element={<Template />} />
-                <Route path="/template-usage/:id" element={<TemplateUsage />} />
                 <Route path="/harga" element={<Harga />} />
                 <Route path="/tentang" element={<Tentang />} />
                 <Route path="/login" element={<Login />} />

@@ -94,7 +94,7 @@ Untuk menjalankan proyek ini secara penuh, Anda perlu membuka **3 terminal terpi
 3.  **Terminal 3: Jalankan Backend API (File Upload)**
     ```bash
     # Dari direktori utama proyek
-    node api/server.js
+    node server.js
     ```
     (Server file akan berjalan di `http://localhost:4000`)
 

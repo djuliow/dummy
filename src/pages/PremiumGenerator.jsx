@@ -4,16 +4,23 @@ import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 
 const uploadAssets = async (files, userId) => {
-  // Dummy implementation
-  console.log("Uploading files for user:", userId, files);
-  await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate upload time
-  const uploadedUrls = {
-    fotoMempelaiWanita: "/assets/adith.jpg",
-    fotoMempelaiPria: "/assets/adriel.jpg",
-    musik: "/assets/dummy-music.mp3",
-    galeriFoto: ["/assets/bg_hero.jpg", "/assets/bg_hero1.jpg"],
-  };
-  console.log("Dummy asset URLs:", uploadedUrls);
+  console.log("Creating blob URLs for user:", userId, files);
+  const uploadedUrls = {};
+
+  if (files.fotoMempelaiWanita) {
+    uploadedUrls.fotoMempelaiWanita = URL.createObjectURL(files.fotoMempelaiWanita);
+  }
+  if (files.fotoMempelaiPria) {
+    uploadedUrls.fotoMempelaiPria = URL.createObjectURL(files.fotoMempelaiPria);
+  }
+  if (files.musik) {
+    uploadedUrls.musik = URL.createObjectURL(files.musik);
+  }
+  if (files.galeriFoto && files.galeriFoto.length > 0) {
+    uploadedUrls.galeriFoto = files.galeriFoto.map(file => URL.createObjectURL(file));
+  }
+
+  console.log("Generated blob URLs:", uploadedUrls);
   return uploadedUrls;
 };
 
@@ -181,11 +188,7 @@ function PremiumGenerator() {
       setLoadingMessage("Menyimpan data undangan...");
       const savedInvitation = await saveInvitationData(dataForDb, session.user);
 
-      // Dummy backend processing
-      setLoadingMessage("Menghubungi AI untuk membuat file undangan...");
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const finalUrl = `http://localhost:3000/invitations/${savedInvitation.slug}`;
+      const finalUrl = `/invitations/${savedInvitation.slug}`;
       const botResponse = {
         id: messages.length + 2,
         type: "bot",

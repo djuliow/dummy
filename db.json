@@ -263,5 +263,39 @@
       "subscription_status": "premium"
     }
   ],
-  "invitations": []
+  "invitations": [
+    {
+      "id": "4f9e",
+      "user_id": "efd3",
+      "template_id": null,
+      "prompt": "Undangan untuk haha dan hihi",
+      "generated_content": {
+        "namaMempelaiPria": "haha",
+        "namaAyahMempelaiPria": "",
+        "namaIbuMempelaiPria": "",
+        "namaMempelaiWanita": "hihi",
+        "namaAyahMempelaiWanita": "",
+        "namaIbuMempelaiWanita": "",
+        "tanggalAcara": "2025-12-12",
+        "waktuAcara": "",
+        "lokasiAcara": "Unklab",
+        "waktuResepsi": "",
+        "tempatResepsi": "",
+        "fotoMempelaiPria": "blob:http://localhost:5173/816b027a-b92d-4041-b22a-e602e2b6e69b",
+        "fotoMempelaiWanita": "blob:http://localhost:5173/69150ff1-8c2c-4c61-a0b1-18a3c8e0c15a",
+        "galeriFoto": [
+          "blob:http://localhost:5173/5a6dfe1d-1ce1-4e32-9672-5cfc2666555f",
+          "blob:http://localhost:5173/befd9107-080c-4c42-a697-d8423c8bd798",
+          "blob:http://localhost:5173/2f01eede-89c2-4bc6-810b-1a3f64261940",
+          "blob:http://localhost:5173/8f8b978b-7d49-4aee-9386-ba905ce951e4"
+        ],
+        "musik": "blob:http://localhost:5173/c4a3fe6d-1c7c-4f94-979a-c19ab2048759",
+        "temaWarna": "",
+        "jenisUndangan": "",
+        "agama": "",
+        "catatanKhusus": ""
+      },
+      "slug": "haha-9wctq9"
+    }
+  ]
 }
